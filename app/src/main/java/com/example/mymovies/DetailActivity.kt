@@ -1,7 +1,9 @@
 package com.example.mymovies
 
-import androidx.appcompat.app.AppCompatActivity
+import android.R
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
@@ -19,6 +21,7 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val movie = intent.getParcelableExtra<Movie>(EXTRA_MOVIE)
@@ -31,6 +34,16 @@ class DetailActivity : AppCompatActivity() {
             binding.tvSummary.text = movie.overview
             bindDetailInfo(binding.tvDetailInfo, movie)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun bindDetailInfo(tvDetailInfo: AppCompatTextView, movie: Movie) {

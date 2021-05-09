@@ -8,7 +8,7 @@ import com.example.mymovies.databinding.ViewMovieItemBinding
 import com.example.mymovies.model.Movie
 
 class MoviesAdapter(
-    var movies: List<Movie>,
+    var movies: MutableList<Movie>,
     private val MovieClickedListener: (Movie) -> Unit) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,14 +20,16 @@ class MoviesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = movies[position]
         holder.bind(movie)
-        holder.itemView.setOnClickListener {
-            MovieClickedListener(movie)
-        }
+    }
+
+    fun addMovies(movies: List<Movie>) {
+        this.movies.addAll(movies)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = movies.size
 
-    class ViewHolder(private val binding: ViewMovieItemBinding) :
+    inner class ViewHolder(private val binding: ViewMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             binding.tvTitle.text = movie.title
@@ -35,6 +37,9 @@ class MoviesAdapter(
                 .with(binding.root.context)
                 .load("https://image.tmdb.org/t/p/w185/${movie.poster_path}")
                 .into(binding.ivCover)
+            binding.root.setOnClickListener {
+                MovieClickedListener(movie)
+            }
         }
     }
 }
