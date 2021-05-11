@@ -1,13 +1,13 @@
-package com.example.mymovies
+package com.example.mymovies.ui.detail
 
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import com.bumptech.glide.Glide
+import com.example.mymovies.R
 import com.example.mymovies.databinding.ActivityDetailBinding
 import com.example.mymovies.model.Movie
 
@@ -32,13 +32,13 @@ class DetailActivity : AppCompatActivity() {
                 .load("https://image.tmdb.org/t/p/w780/${movie.poster_path}")
                 .into(binding.ivBackdrop)
             binding.tvSummary.text = movie.overview
-            bindDetailInfo(binding.tvDetailInfo, movie)
+            bindDetailInfo(movie)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.home -> {
+            android.R.id.home -> {
                 onBackPressed()
                 return true
             }
@@ -46,8 +46,8 @@ class DetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun bindDetailInfo(tvDetailInfo: AppCompatTextView, movie: Movie) {
-        tvDetailInfo.text = buildSpannedString {
+    private fun bindDetailInfo(movie: Movie) {
+        binding.tvDetailInfo.text = buildSpannedString {
             appendInfo(R.string.original_language, movie.original_language)
             appendInfo(R.string.original_title, movie.original_title)
             appendInfo(R.string.release_date, movie.release_date)
