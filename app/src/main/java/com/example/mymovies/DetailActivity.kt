@@ -1,7 +1,7 @@
 package com.example.mymovies
 
-import android.R
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
@@ -48,17 +48,19 @@ class DetailActivity : AppCompatActivity() {
 
     private fun bindDetailInfo(tvDetailInfo: AppCompatTextView, movie: Movie) {
         tvDetailInfo.text = buildSpannedString {
-            bold { append("Original Language: ") }
-            appendLine(movie.original_language)
-            bold { append("Original Title: ") }
-            appendLine(movie.original_title)
-            bold { append("Release Date: ") }
-            appendLine(movie.release_date)
-            bold { append("Popularity: ") }
-            appendLine(movie.popularity.toString())
-            bold { append("Vote Average: ") }
-            appendLine(movie.vote_average.toString())
+            appendInfo(R.string.original_language, movie.original_language)
+            appendInfo(R.string.original_title, movie.original_title)
+            appendInfo(R.string.release_date, movie.release_date)
+            appendInfo(R.string.popularity, movie.popularity.toString())
+            appendInfo(R.string.vote_average, movie.vote_average.toString())
         }
+    }
 
+    private fun SpannableStringBuilder.appendInfo(stringRes: Int, value: String ) {
+        bold {
+            append(getString(stringRes))
+            append(": ")
+        }
+        appendLine(value)
     }
 }
